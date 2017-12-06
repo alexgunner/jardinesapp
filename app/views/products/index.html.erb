@@ -1,0 +1,73 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">Inicio</a>
+    </div>
+
+    <% if current_user.name == "Administrador" %>
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="/products">Productos</a></li>
+          <li><a href="/orders">Pedidos</a></li>
+          <li><%= link_to('Cerrar Sesión', destroy_user_session_path, method: :delete) %></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+  <% else %>
+    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav">
+          <li><a href="#">Lista de productos</a></li>
+          <li><a href="#">Mis Pedidos</a></li>
+        </ul>
+      </div><!-- /.navbar-collapse -->
+  <% end %>
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-10">
+      <h1>Productos</h1>
+      <%= link_to 'Registrar Producto', new_product_path, class: "btn btn-primary" %>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Descripción</th>
+              <th>Costo</th>
+              <th>Tienda</th>
+              <th colspan="3"></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <% @products.each do |product| %>
+              <tr>
+                <td><%= product.name %></td>
+                <td><%= product.description %></td>
+                <td><%= product.cost %></td>
+                <td><%= product.store %></td>
+                <td><img src="<%= product.pic(:thumb) %>"></td>
+                <td><%= link_to 'Editar', edit_product_path(product) %></td>
+                <td><%= link_to 'Borrar', product, method: :delete, data: { confirm: '¿Está seguro que desea borrar este producto?' } %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>    
+      </div>
+    </div>
+  </div>
+</div>
+
+  
+
+  <br>

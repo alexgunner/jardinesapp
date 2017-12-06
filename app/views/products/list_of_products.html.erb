@@ -1,0 +1,86 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="#">Inicio</a>
+    </div>
+
+    <% if current_user.name == "Administrador" %>
+	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="/products">Productos</a></li>
+	        <li><a href="/orders">Órdenes</a></li>
+	        <li><%= link_to('Cerrar Sesión', destroy_user_session_path, method: :delete) %></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	<% else %>
+		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+	      <ul class="nav navbar-nav">
+	        <li><a href="#">Lista de productos</a></li>
+	        <li><a href="#">Mis Pedidos</a></li>
+	      </ul>
+	    </div><!-- /.navbar-collapse -->
+	<% end %>
+  </div><!-- /.container-fluid -->
+</nav>
+
+
+<div class="container">
+	<div class="row">
+		<div class="col-lg-2"></div>
+		<div class="col-lg-8">
+			<h2>Selecciona los productos que deseas ordenar</h2>
+			<%= link_to "Atrás", "/", class: "btn btn-danger" %>
+			<form action="/order_products" method="POST">
+				<input type="hidden" name="authenticity_token" value="token_value">
+				<h3>Restaurante</h3>
+				<hr class="divider">
+				<% @restaurant.each_with_index do |r, index| %>
+					<div class="row">
+						<div class="col-lg-2">
+							<strong><%= r.name %></strong><br>
+							<img src="<%= r.pic(:thumb) %>" class="img-responsive">
+						</div>	
+						<div class="col-lg-5">
+							<br>
+							<p><%= r.description %></p>
+							<strong>Costo: </strong> Bs. <%= r.cost %>
+						</div>
+						<div class="col-lg-5">
+							<label>Cantidad</label>
+							<input type="number" name="product[][<%= r.id %>]" id="product[][<%= r.id %>]" value="0" min="0">
+						</div>
+						<hr class="divider">
+					</div>
+				<% end %>
+				<h3>Pastelería</h3>
+				<hr class="divider">
+				<% @pasteleria.each_with_index do |r, index| %>
+					<div class="row">
+						<div class="col-lg-2">
+							<strong><%= r.name %></strong><br>
+							<img src="<%= r.pic(:thumb) %>" class="img-responsive">
+						</div>	
+						<div class="col-lg-5">
+							<br>
+							<p><%= r.description %></p>
+							<strong>Costo: </strong> Bs. <%= r.cost %>
+						</div>
+						<div class="col-lg-5">
+							<label>Cantidad</label>
+							<input type="number" name="product[][<%= r.id %>]" id="product[][<%= r.id %>]" value="0" min="0">
+						</div>
+						<hr class="divider">
+					</div>
+				<% end %>
+				<input type="submit" value="Ordenar" class="btn btn-success"> 
+			</form>
+		</div>
+	</div>
+</div>
